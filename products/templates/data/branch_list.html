@@ -1,7 +1,7 @@
 {% extends "core/base.html" %}
 
-{% block title %}Προϊόντα{% endblock %}
-{% block page_title %}Προϊόντα{% endblock %}
+{% block title %}Branches{% endblock %}
+{% block page_title %}Branches{% endblock %}
 
 {% block content %}
 
@@ -9,16 +9,15 @@
 
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-slate-900">Προϊόντα</h1>
+            <h1 class="text-3xl font-bold text-slate-900">Branches</h1>
             <p class="text-slate-500 mt-2">
-                Προβολή και επεξεργασία όλων των προϊόντων.
+                Προβολή και επεξεργασία όλων των branches.
             </p>
         </div>
-        {% comment %} add unit {% endcomment %}
 
-        <a href="{% url 'products:product_add' %}"
+        <a href="{% url 'products:branch_add' %}"
            class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-900 text-white font-medium hover:bg-slate-800 transition">
-            + Προσθήκη Προϊόντος
+            + Προσθήκη Branch
         </a>
 
         <a href="{% url 'dashboard' %}"
@@ -34,40 +33,21 @@
                     <tr>
                         <th class="px-6 py-4 text-left font-semibold">ID</th>
                         <th class="px-6 py-4 text-left font-semibold">Όνομα</th>
-                        <th class="px-6 py-4 text-left font-semibold">Μονάδα</th>
-                        <th class="px-6 py-4 text-left font-semibold">Active</th>
                         <th class="px-6 py-4 text-left font-semibold">Ενέργειες</th>
                     </tr>
                 </thead>
 
                 <tbody class="divide-y divide-slate-100">
-                    {% for product in products %}
+                    {% for branch in branches %}
                     <tr class="hover:bg-slate-50 transition">
-                        <td class="px-6 py-4">{{ product.id }}</td>
-                        <td class="px-6 py-4 font-medium text-slate-900">{{ product.name }}</td>
-                        <td class="px-6 py-4">{{ product.unit.name }}</td>
-                        <td class="px-6 py-4">
-                            {% if product.active %}
-                                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
-                                    Yes
-                                </span>
-                            {% else %}
-                                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-                                    No
-                                </span>
-                            {% endif %}
-                        </td>
+                        <td class="px-6 py-4">{{ branch.id }}</td>
+                        <td class="px-6 py-4 font-medium text-slate-900">{{ branch.name }}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
-                                <a href="{% url 'products:product_edit' product.id %}"
-                                   class="inline-flex items-center px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition">
-                                    Edit
-                                </a>
-
                                 <form method="post"
-                                      action="{% url 'products:product_delete' product.id %}"
+                                      action="{% url 'products:branch_delete' branch.id %}"
                                       class="inline-block"
-                                      onsubmit="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις το προϊόν {{ product.name }};');">
+                                      onsubmit="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις την branch {{ branch.name }};');">
                                     {% csrf_token %}
                                     <button type="submit"
                                             class="inline-flex items-center px-4 py-2 rounded-xl border border-red-300 bg-white text-red-700 hover:bg-red-50 transition">
@@ -80,7 +60,7 @@
                     {% empty %}
                     <tr>
                         <td colspan="6" class="px-6 py-8 text-center text-slate-500">
-                            Δεν υπάρχουν προϊόντα.
+                            Δεν υπάρχουν branches.
                         </td>
                     </tr>
                     {% endfor %}

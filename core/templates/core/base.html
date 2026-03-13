@@ -23,9 +23,12 @@
         <nav class="flex-1 px-4 py-6 space-y-2">
 
             <a href="{% url 'dashboard' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 transition">
-                📊 Dashboard
+                ⚙️ Διαχείριση Δεδομένων
             </a>
-
+            {% comment %} <a href="{% url 'dashboard' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 transition">
+                📊 Dashboard
+            </a> {% endcomment %}
+{% comment %} 
             <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 transition">
                 📦 Παραγγελίες
             </a>
@@ -38,8 +41,12 @@
                 🧾 Προϊόντα
             </a>
 
-            {% comment %} <a href="{% url 'users_list' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 transition">
-                👥 Χρήστες
+            <a href="{% url 'users' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 transition">
+                👥 Διαχείριση Χρηστών
+            </a>
+
+            <a href="{% url 'products:product_list' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 transition">
+                🧾 Διαχείριση Προϊόντων
             </a> {% endcomment %}
 
             {% comment %} <a href="/admin/" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 transition">

@@ -24,16 +24,16 @@ Dashboard
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
         <!-- Add User -->
-        <a href="#"
+        <a href="{% url 'products:branch_list' %}"
            class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
 
             <div class="flex items-center justify-between">
-                <span class="text-3xl">👤</span>
-                <span class="text-xs text-slate-400">ADMIN</span>
+                <span class="text-3xl">🏬</span>
+                <span class="text-xs text-slate-400">Καταστήματα</span>
             </div>
 
             <h3 class="mt-4 text-lg font-semibold text-slate-900 group-hover:text-slate-700">
-                Προσθήκη Χρήστη
+                Διαχείριση Branches
             </h3>
 
             <p class="text-sm text-slate-500 mt-2">
@@ -49,7 +49,7 @@ Dashboard
 
             <div class="flex items-center justify-between">
                 <span class="text-3xl">👥</span>
-                <span class="text-xs text-slate-400">USERS</span>
+                <span class="text-xs text-slate-400">Χρήστες</span>
             </div>
 
             <h3 class="mt-4 text-lg font-semibold text-slate-900">
@@ -64,7 +64,7 @@ Dashboard
 
 
         <!-- Add Product -->
-        <a href="{% url 'products:product_add' %}"
+        {% comment %} <a href="{% url 'products:product_add' %}"
            class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
 
             <div class="flex items-center justify-between">
@@ -80,7 +80,7 @@ Dashboard
                 Δημιουργία νέου προϊόντος.
             </p>
 
-        </a>
+        </a> {% endcomment %}
 
 
         <!-- Products List -->
@@ -89,11 +89,11 @@ Dashboard
 
             <div class="flex items-center justify-between">
                 <span class="text-3xl">🧾</span>
-                <span class="text-xs text-slate-400">PRODUCT LIST</span>
+                <span class="text-xs text-slate-400">Πίνακας Προϊόντων</span>
             </div>
 
             <h3 class="mt-4 text-lg font-semibold text-slate-900">
-                Λίστα Προϊόντων
+                Διαχείριση Προϊόντων
             </h3>
 
             <p class="text-sm text-slate-500 mt-2">
@@ -104,26 +104,26 @@ Dashboard
 
 
         <!-- Add Store -->
-        <a href="#"
+        <a href="{% url 'products:unit_list' %}"
            class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
 
             <div class="flex items-center justify-between">
-                <span class="text-3xl">🏬</span>
-                <span class="text-xs text-slate-400">STORES</span>
+                <span class="text-3xl">Kg</span>
+                <span class="text-xs text-slate-400">Μονάδες</span>
             </div>
 
             <h3 class="mt-4 text-lg font-semibold text-slate-900">
-                Προσθήκη Καταστήματος
+                Προσθήκη Μονάδας
             </h3>
 
             <p class="text-sm text-slate-500 mt-2">
-                Δημιουργία νέου καταστήματος.
+                Δημιουργία νέας μονάδας.
             </p>
 
         </a>
 
 
-        <!-- Create Order -->
+        {% comment %} <!-- Create Order -->
         <a href="#"
            class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
 
@@ -140,7 +140,7 @@ Dashboard
                 Δημιουργία νέας εσωτερικής παραγγελίας.
             </p>
 
-        </a>
+        </a> {% endcomment %}
 
     </div>
 

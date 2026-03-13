@@ -8,4 +8,15 @@ urlpatterns = [
     path('add/', views.product_add, name='product_add'),
     path('<int:product_id>/edit/', views.product_edit, name='product_edit'),
     path('<int:product_id>/delete/', views.product_delete, name='product_delete'),
+
+    # Units
+    path('units', views.unit_list, name='unit_list'),
+    path('units/<int:unit_id>/delete/', views.unit_delete, name='unit_delete'),
+    path('units/add/', views.unit_add, name='unit_add'),
+
+    # Branches
+    path('branches', views.branch_list, name='branch_list'),
+    path('branches/<int:branch_id>/delete/', views.branch_delete, name='branch_delete'),
+    path('branches/add/', views.branch_add, name='branch_add'),
+    
 ]

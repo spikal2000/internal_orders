@@ -35,22 +35,52 @@
                     <input type="text" name="name" class="w-full rounded-xl border border-slate-300 px-4 py-3">
                 </div>
 
+               {% comment %} dropdown for unit {% endcomment %}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Code</label>
-                    <input type="text" name="code" class="w-full rounded-xl border border-slate-300 px-4 py-3">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">
+                        Μονάδα
+                    </label>
+                    <select name="unit" class="w-full rounded-xl border border-slate-300 px-4 py-3">
+                        <option value="">-- Επιλέξτε Μονάδα --</option>
+                        {% for unit in units %}
+                        <option value="{{ unit.id }}">{{ unit.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
+
+                {% comment %} dropdown for branch {% endcomment %}
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">
+                        Branch
+                    </label>
+                    <select name="branch" class="w-full rounded-xl border border-slate-300 px-4 py-3">
+                        <option value="">-- Επιλέξτε Branch --</option>
+                        {% for branch in branches %}
+                        <option value="{{ branch.id }}">{{ branch.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% comment %} dropdown for category {% endcomment %}
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">
+                        Category
+                    </label>
+                    <select name="category" class="w-full rounded-xl border border-slate-300 px-4 py-3">
+                        <option value="">-- Επιλέξτε Κατηγορία --</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
             </div>
 
-            {% comment %} <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Μονάδα</label>
-                    <select name="unit" class="w-full rounded-xl border border-slate-300 px-4 py-3">
-                        <option value="pcs">Τεμάχια</option>
-                        <option value="kg">Κιλά</option>
-                        <option value="tray">Ταψί</option>
-                        <option value="box">Κούτα</option>
-                    </select>
-                </div> {% endcomment %}
+            {% comment %} description {% endcomment %}
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">
+                    Περιγραφή
+                </label>
+                <textarea name="description" rows="4" class="w-full rounded-xl border border-slate-300 px-4 py-3"></textarea>
 
                 <div class="flex items-end">
                     <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-4 w-full">

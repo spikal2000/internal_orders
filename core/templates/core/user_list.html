@@ -1,0 +1,94 @@
+{% extends "core/base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block page_title %}
+Χρήστες
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-900">Χρήστες</h1>
+            <p class="text-slate-500 mt-2">
+                Προβολή και επεξεργασία όλων των χρηστών του συστήματος.
+            </p>
+        </div>
+
+        <a href="{% url 'user_add' %}"
+           class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-900 text-white font-medium hover:bg-slate-800 transition">
+            + Προσθήκη Χρήστη
+        </a>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+                <thead class="bg-slate-50 text-slate-500">
+                    <tr>
+                        <th class="px-6 py-4 text-left font-semibold">ID</th>
+                        <th class="px-6 py-4 text-left font-semibold">Username</th>
+                        <th class="px-6 py-4 text-left font-semibold">Active</th>
+                        <th class="px-6 py-4 text-left font-semibold">Superuser</th>
+                        <th class="px-6 py-4 text-left font-semibold">Ενέργειες</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-slate-100">
+                    {% for user in users %}
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="px-6 py-4">{{ user.id }}</td>
+                        <td class="px-6 py-4 font-medium text-slate-900">{{ user.username }}</td>
+                        <td class="px-6 py-4">
+                            {% if user.is_active %}
+                                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+                                    Yes
+                                </span>
+                            {% else %}
+                                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                                    No
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if user.is_superuser %}
+                                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                                    Yes
+                                </span>
+                            {% else %}
+                                <span class="text-slate-400">No</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="{% url 'user_edit' user.id %}"
+                               class="inline-flex items-center px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition">
+                                Edit
+                            </a>
+                            <form method="post" action="{% url 'user_delete' user.id %}" class="inline-block"
+                                onsubmit="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις τον χρήστη {{ user.username }};');">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="inline-flex items-center px-4 py-2 rounded-xl border border-red-300 bg-white text-red-700 hover:bg-red-50 transition">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="px-6 py-8 text-center text-slate-500">
+                            Δεν υπάρχουν χρήστες.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

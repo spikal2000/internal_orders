@@ -1,0 +1,21 @@
+
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+    <h1>Internal Orders</h1>
+
+    <p>Γεια σου, {{ request.user.username }}</p>
+
+    <ul>
+        <li><a href="{% url 'users' %}">Users</a></li>
+        <li><a href="/admin/">Admin</a></li>
+        <li>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </li>
+    </ul>
+
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends "core/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto space-y-10">
+
+    <!-- Header -->
+    <div>
+        <h1 class="text-3xl font-bold text-slate-900">
+            Dashboard
+        </h1>
+        <p class="text-slate-500 mt-2">
+            Διαχείριση χρηστών, προϊόντων και εσωτερικών παραγγελιών.
+        </p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+        <!-- Add User -->
+        <a href="#"
+           class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
+
+            <div class="flex items-center justify-between">
+                <span class="text-3xl">👤</span>
+                <span class="text-xs text-slate-400">ADMIN</span>
+            </div>
+
+            <h3 class="mt-4 text-lg font-semibold text-slate-900 group-hover:text-slate-700">
+                Προσθήκη Χρήστη
+            </h3>
+
+            <p class="text-sm text-slate-500 mt-2">
+                Δημιουργία νέου χρήστη στο σύστημα.
+            </p>
+
+        </a>
+
+
+        <!-- Manage Users -->
+        <a href="{% url 'users' %}"
+           class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
+
+            <div class="flex items-center justify-between">
+                <span class="text-3xl">👥</span>
+                <span class="text-xs text-slate-400">USERS</span>
+            </div>
+
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">
+                Διαχείριση Χρηστών
+            </h3>
+
+            <p class="text-sm text-slate-500 mt-2">
+                Προβολή και επεξεργασία χρηστών.
+            </p>
+
+        </a>
+
+
+        <!-- Add Product -->
+        <a href="{% url 'products:product_add' %}"
+           class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
+
+            <div class="flex items-center justify-between">
+                <span class="text-3xl">📦</span>
+                <span class="text-xs text-slate-400">PRODUCTS</span>
+            </div>
+
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">
+                Προσθήκη Προϊόντος
+            </h3>
+
+            <p class="text-sm text-slate-500 mt-2">
+                Δημιουργία νέου προϊόντος.
+            </p>
+
+        </a>
+
+
+        <!-- Products List -->
+        <a href="{% url 'products:product_list' %}"
+           class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
+
+            <div class="flex items-center justify-between">
+                <span class="text-3xl">🧾</span>
+                <span class="text-xs text-slate-400">PRODUCT LIST</span>
+            </div>
+
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">
+                Λίστα Προϊόντων
+            </h3>
+
+            <p class="text-sm text-slate-500 mt-2">
+                Προβολή όλων των προϊόντων.
+            </p>
+
+        </a>
+
+
+        <!-- Add Store -->
+        <a href="#"
+           class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
+
+            <div class="flex items-center justify-between">
+                <span class="text-3xl">🏬</span>
+                <span class="text-xs text-slate-400">STORES</span>
+            </div>
+
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">
+                Προσθήκη Καταστήματος
+            </h3>
+
+            <p class="text-sm text-slate-500 mt-2">
+                Δημιουργία νέου καταστήματος.
+            </p>
+
+        </a>
+
+
+        <!-- Create Order -->
+        <a href="#"
+           class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
+
+            <div class="flex items-center justify-between">
+                <span class="text-3xl">📋</span>
+                <span class="text-xs text-slate-400">ORDERS</span>
+            </div>
+
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">
+                Νέα Παραγγελία
+            </h3>
+
+            <p class="text-sm text-slate-500 mt-2">
+                Δημιουργία νέας εσωτερικής παραγγελίας.
+            </p>
+
+        </a>
+
+    </div>
+
+
+    <!-- Admin Section -->
+    {% if request.user.is_superuser %}
+
+    <div class="pt-6 border-t border-slate-200">
+
+        <h2 class="text-lg font-semibold text-slate-900 mb-4">
+            Administrator Tools
+        </h2>
+
+        <div class="flex gap-4 flex-wrap">
+
+            <a href="/admin/"
+               class="px-5 py-3 rounded-xl bg-slate-900 text-white font-medium hover:bg-slate-800">
+                Django Admin
+            </a>
+
+            <a href="#"
+               class="px-5 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50">
+                System Settings
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

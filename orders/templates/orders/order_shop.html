@@ -1,0 +1,439 @@
+{% extends "core/base.html" %}
+
+{% block title %}Νέα Παραγγελία{% endblock %}
+{% block page_title %}Νέα Παραγγελία{% endblock %}
+
+{% block content %}
+<div class="h-[calc(100vh-140px)] flex flex-col gap-4 overflow-hidden">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900">Νέα Παραγγελία</h1>
+      <p class="text-sm text-slate-500">
+        Επίλεξε προϊόντα και δημιούργησε εσωτερική παραγγελία.
+      </p>
+    </div>
+
+    <a
+      href="{% url 'orders:order_list' %}"
+      class="px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 text-sm"
+    >
+      Προβολή Παραγγελιών
+    </a>
+  </div>
+
+  {% if error %}
+    <div class="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+      {{ error }}
+    </div>
+  {% endif %}
+
+  {% if success %}
+    <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+      {{ success }}
+    </div>
+  {% endif %}
+
+  <form
+    id="orderForm"
+    method="post"
+    class="grid grid-cols-[220px_minmax(0,1fr)_320px] gap-5 flex-1 min-h-0"
+  >
+    {% csrf_token %}
+    <input type="hidden" name="items_json" id="itemsJsonInput" />
+
+    <aside class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 flex flex-col min-h-0">
+      <div class="mb-3">
+        <h2 class="text-sm font-semibold text-slate-900">Κατηγορίες</h2>
+      </div>
+
+      <div class="flex-1 min-h-0 overflow-y-auto space-y-2 pr-1">
+        <button
+          type="button"
+          class="category-btn w-full text-left px-3 py-2 rounded-xl bg-slate-900 text-white text-sm"
+          data-category="all"
+        >
+          Όλα
+        </button>
+
+        {% for category in categories %}
+          <button
+            type="button"
+            class="category-btn w-full text-left px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-sm"
+            data-category="{{ category.id }}"
+          >
+            {{ category.name }}
+          </button>
+        {% endfor %}
+      </div>
+    </aside>
+
+    <section class="flex flex-col min-h-0">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 mb-3">
+        <div class="grid grid-cols-12 gap-2">
+          <div class="col-span-3 rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm">
+            <p class="text-xs text-slate-500">Branch χρήστη</p>
+            <p class="font-medium text-slate-800">
+              {% if user_branch %}
+                {{ user_branch.name }}
+              {% else %}
+                Δεν έχει οριστεί branch
+              {% endif %}
+            </p>
+          </div>
+
+          <input
+            type="text"
+            id="productSearch"
+            placeholder="Αναζήτηση προϊόντος..."
+            class="col-span-6 rounded-xl border border-slate-300 px-3 py-2 text-sm"
+          />
+
+          <input
+            type="text"
+            name="notes"
+            value="{{ notes_value }}"
+            placeholder="Σημειώσεις"
+            class="col-span-3 rounded-xl border border-slate-300 px-3 py-2 text-sm"
+          />
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 flex-1 min-h-0 overflow-hidden">
+        <div class="h-full overflow-y-auto pr-2">
+          <div id="productsGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-3">
+            {% for product in products %}
+              <div
+                class="product-card border border-slate-200 rounded-xl bg-white p-3"
+                data-category="{{ product.category_id }}"
+                data-name="{{ product.name|lower }}"
+                data-branch="{{ product.branch_id }}"
+              >
+                <div class="flex justify-between text-xs text-slate-400 mb-1 gap-3">
+                  <span>{{ product.category.name }}</span>
+                    <span class="{% if user_branch and product.branch_id == user_branch.id %}font-semibold text-amber-600{% endif %}">
+                      {{ product.branch.name }}
+                    </span>
+                </div>
+
+                <h3 class="text-sm font-semibold text-slate-900">{{ product.name }}</h3>
+
+                {% if product.description %}
+                  <p class="text-xs text-slate-500 mt-1">{{ product.description }}</p>
+                {% endif %}
+
+                <p class="text-xs text-slate-500 mt-2">{{ product.unit.name }}</p>
+
+                <div class="mt-3 flex items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    class="minus-btn w-8 h-8 rounded-lg border border-slate-300"
+                    data-product-id="{{ product.id }}"
+                  >
+                    -
+                  </button>
+
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="0"
+                    class="qty-input w-16 h-8 text-center border border-slate-300 rounded-lg text-sm"
+                    data-product-id="{{ product.id }}"
+                    data-product-name="{{ product.name }}"
+                    data-product-unit="{{ product.unit.name }}"
+                  />
+
+                  <button
+                    type="button"
+                    class="plus-btn w-8 h-8 rounded-lg border border-slate-300"
+                    data-product-id="{{ product.id }}"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="add-cart-btn mt-2 w-full px-2 py-1 rounded-lg bg-slate-900 text-white text-xs"
+                  data-product-id="{{ product.id }}"
+                  data-product-name="{{ product.name }}"
+                  data-product-unit="{{ product.unit.name }}"
+                >
+                  Προσθήκη
+                </button>
+              </div>
+            {% empty %}
+              <div class="col-span-full rounded-2xl border border-dashed border-slate-300 py-8 text-center text-sm text-slate-500">
+                Δεν υπάρχουν ενεργά προϊόντα.
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 flex flex-col min-h-0">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-sm font-semibold text-slate-900">Καλάθι</h2>
+
+        <button type="button" id="clearCartBtn" class="text-xs text-red-600">
+          Καθαρισμός
+        </button>
+      </div>
+
+      <div id="cartItems" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
+
+      <div class="border-t border-slate-200 pt-3 mt-3">
+        <div class="flex justify-between text-sm mb-2">
+          <span>Σύνολο τεμαχίων</span>
+          <span id="cartCount">0</span>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-2 rounded-xl bg-slate-900 text-white text-sm"
+        >
+          Καταχώριση Παραγγελίας
+        </button>
+      </div>
+    </aside>
+  </form>
+</div>
+
+<script>
+  const qtyInputs = document.querySelectorAll(".qty-input");
+  const plusButtons = document.querySelectorAll(".plus-btn");
+  const minusButtons = document.querySelectorAll(".minus-btn");
+  const addButtons = document.querySelectorAll(".add-cart-btn");
+  const categoryButtons = document.querySelectorAll(".category-btn");
+  const productCards = document.querySelectorAll(".product-card");
+  const productSearch = document.getElementById("productSearch");
+  const cartItemsContainer = document.getElementById("cartItems");
+  const cartCount = document.getElementById("cartCount");
+  const clearCartBtn = document.getElementById("clearCartBtn");
+  const itemsJsonInput = document.getElementById("itemsJsonInput");
+  const orderForm = document.getElementById("orderForm");
+
+  const cart = new Map();
+  let activeCategory = "all";
+
+  function normalizeQuantity(value) {
+    const quantity = Number.parseFloat(value);
+    if (Number.isNaN(quantity) || quantity < 0) {
+      return 0;
+    }
+
+    return Math.round(quantity * 100) / 100;
+  }
+
+  function formatQuantity(value) {
+    const quantity = normalizeQuantity(value);
+    return Number.isInteger(quantity) ? String(quantity) : quantity.toFixed(2);
+  }
+
+  function updateInputValue(productId, value) {
+    const input = document.querySelector(`.qty-input[data-product-id="${productId}"]`);
+    if (input) {
+      input.value = formatQuantity(value);
+    }
+  }
+
+  function syncHiddenInput() {
+    const payload = Array.from(cart.values()).map((item) => ({
+      product_id: item.productId,
+      quantity: item.quantity,
+    }));
+
+    itemsJsonInput.value = JSON.stringify(payload);
+  }
+
+  function renderCart() {
+    if (cart.size === 0) {
+      cartItemsContainer.innerHTML = `
+        <div class="text-xs text-slate-500 text-center border border-dashed border-slate-300 rounded-xl py-4">
+          Δεν υπάρχουν προϊόντα
+        </div>
+      `;
+      cartCount.textContent = "0";
+      syncHiddenInput();
+      return;
+    }
+
+    const items = Array.from(cart.values()).sort((a, b) => a.name.localeCompare(b.name, "el"));
+    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+
+    cartItemsContainer.innerHTML = items.map((item) => `
+      <div class="border border-slate-200 rounded-xl p-3">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-sm font-semibold text-slate-900">${item.name}</p>
+            <p class="text-xs text-slate-500">${item.unit}</p>
+          </div>
+
+          <button
+            type="button"
+            class="remove-cart-item text-xs text-red-600"
+            data-product-id="${item.productId}"
+          >
+            X
+          </button>
+        </div>
+
+        <div class="mt-3 flex items-center justify-between">
+          <button
+            type="button"
+            class="cart-minus w-8 h-8 rounded-lg border border-slate-300"
+            data-product-id="${item.productId}"
+          >
+            -
+          </button>
+
+          <span class="text-sm font-medium">${formatQuantity(item.quantity)}</span>
+
+          <button
+            type="button"
+            class="cart-plus w-8 h-8 rounded-lg border border-slate-300"
+            data-product-id="${item.productId}"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    `).join("");
+
+    cartCount.textContent = formatQuantity(totalQuantity);
+    syncHiddenInput();
+  }
+
+  function setCartItem(productId, quantity, fallbackMeta = null) {
+    const normalizedQuantity = normalizeQuantity(quantity);
+
+    if (normalizedQuantity <= 0) {
+      cart.delete(productId);
+      updateInputValue(productId, 0);
+      renderCart();
+      return;
+    }
+
+    const input = document.querySelector(`.qty-input[data-product-id="${productId}"]`);
+    const name = fallbackMeta?.name || input?.dataset.productName || "";
+    const unit = fallbackMeta?.unit || input?.dataset.productUnit || "";
+
+    cart.set(productId, {
+      productId,
+      name,
+      unit,
+      quantity: normalizedQuantity,
+    });
+
+    updateInputValue(productId, normalizedQuantity);
+    renderCart();
+  }
+
+  function applyFilters() {
+    const searchValue = productSearch.value.trim().toLowerCase();
+    productCards.forEach((card) => {
+      const matchesCategory = activeCategory === "all" || card.dataset.category === activeCategory;
+      const matchesSearch = card.dataset.name.includes(searchValue);
+
+      card.classList.toggle("hidden", !(matchesCategory && matchesSearch));
+    });
+  }
+
+  qtyInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      const productId = Number.parseInt(input.dataset.productId, 10);
+      setCartItem(productId, input.value);
+    });
+  });
+
+  plusButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = Number.parseInt(button.dataset.productId, 10);
+      const currentQuantity = cart.get(productId)?.quantity ?? normalizeQuantity(
+        document.querySelector(`.qty-input[data-product-id="${productId}"]`)?.value
+      );
+      setCartItem(productId, currentQuantity + 1);
+    });
+  });
+
+  minusButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = Number.parseInt(button.dataset.productId, 10);
+      const currentQuantity = cart.get(productId)?.quantity ?? normalizeQuantity(
+        document.querySelector(`.qty-input[data-product-id="${productId}"]`)?.value
+      );
+      setCartItem(productId, Math.max(currentQuantity - 1, 0));
+    });
+  });
+
+  addButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = Number.parseInt(button.dataset.productId, 10);
+      const input = document.querySelector(`.qty-input[data-product-id="${productId}"]`);
+      const quantity = normalizeQuantity(input.value);
+
+      setCartItem(productId, quantity, {
+        name: button.dataset.productName,
+        unit: button.dataset.productUnit,
+      });
+    });
+  });
+
+  categoryButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeCategory = button.dataset.category;
+
+      categoryButtons.forEach((item) => {
+        item.classList.remove("bg-slate-900", "text-white");
+        item.classList.add("border", "border-slate-200");
+      });
+
+      button.classList.add("bg-slate-900", "text-white");
+      button.classList.remove("border", "border-slate-200");
+
+      applyFilters();
+    });
+  });
+
+  productSearch.addEventListener("input", applyFilters);
+  clearCartBtn.addEventListener("click", () => {
+    cart.clear();
+    qtyInputs.forEach((input) => {
+      input.value = "0";
+    });
+    renderCart();
+  });
+
+  cartItemsContainer.addEventListener("click", (event) => {
+    const removeButton = event.target.closest(".remove-cart-item");
+    if (removeButton) {
+      const productId = Number.parseInt(removeButton.dataset.productId, 10);
+      setCartItem(productId, 0);
+      return;
+    }
+
+    const plusButton = event.target.closest(".cart-plus");
+    if (plusButton) {
+      const productId = Number.parseInt(plusButton.dataset.productId, 10);
+      const currentQuantity = cart.get(productId)?.quantity ?? 0;
+      setCartItem(productId, currentQuantity + 1);
+      return;
+    }
+
+    const minusButton = event.target.closest(".cart-minus");
+    if (minusButton) {
+      const productId = Number.parseInt(minusButton.dataset.productId, 10);
+      const currentQuantity = cart.get(productId)?.quantity ?? 0;
+      setCartItem(productId, Math.max(currentQuantity - 1, 0));
+    }
+  });
+
+  orderForm.addEventListener("submit", () => {
+    syncHiddenInput();
+  });
+
+  applyFilters();
+  renderCart();
+</script>
+{% endblock %}

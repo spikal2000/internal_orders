@@ -4,70 +4,81 @@
 {% block page_title %}Προσθήκη Χρήστη{% endblock %}
 
 {% block content %}
-
 <div class="max-w-3xl mx-auto space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-900">Νέος Χρήστης</h1>
+      <p class="text-slate-500 mt-2">Δημιουργία νέου χρήστη στο σύστημα.</p>
+    </div>
 
-    <div class="flex items-center justify-between">
+    <a
+      href="{% url 'users' %}"
+      class="inline-flex items-center px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition"
+    >
+      Πίσω
+    </a>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
+    <form method="post" class="space-y-6">
+      {% csrf_token %}
+
+      {% if error %}
+        <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-            <h1 class="text-3xl font-bold text-slate-900">Νέος Χρήστης</h1>
-            <p class="text-slate-500 mt-2">Δημιουργία νέου χρήστη στο σύστημα.</p>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Username</label>
+          <input type="text" name="username" class="w-full rounded-xl border border-slate-300 px-4 py-3">
         </div>
 
-        <a href="{% url 'users' %}"
-           class="inline-flex items-center px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition">
-            Πίσω
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Password</label>
+          <input type="password" name="password" class="w-full rounded-xl border border-slate-300 px-4 py-3">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-slate-700 mb-2">Branch</label>
+          <select name="branch" class="w-full rounded-xl border border-slate-300 px-4 py-3">
+            <option value="">Επίλεξε branch</option>
+            {% for current_branch in branches %}
+              <option value="{{ current_branch.id }}">{{ current_branch.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-4">
+          <input type="checkbox" name="is_active" checked>
+          <span class="text-sm font-medium text-slate-700">Active</span>
+        </label>
+
+        <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-4">
+          <input type="checkbox" name="is_superuser">
+          <span class="text-sm font-medium text-slate-700">Superuser</span>
+        </label>
+      </div>
+
+      <div class="pt-4 flex items-center gap-4">
+        <button
+          type="submit"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-900 text-white font-medium hover:bg-slate-800 transition"
+        >
+          Αποθήκευση
+        </button>
+
+        <a
+          href="{% url 'users' %}"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition"
+        >
+          Ακύρωση
         </a>
-    </div>
-
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-        <form method="post" class="space-y-6">
-            {% csrf_token %}
-
-            {% if error %}
-            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm">
-                {{ error }}
-            </div>
-            {% endif %}
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Username</label>
-                    <input type="text" name="username" class="w-full rounded-xl border border-slate-300 px-4 py-3">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Password</label>
-                    <input type="password" name="password" class="w-full rounded-xl border border-slate-300 px-4 py-3">
-                </div>
-
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-4">
-                    <input type="checkbox" name="is_active" checked>
-                    <span class="text-sm font-medium text-slate-700">Active</span>
-                </label>
-
-                <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-4">
-                    <input type="checkbox" name="is_superuser">
-                    <span class="text-sm font-medium text-slate-700">Superuser</span>
-                </label>
-            </div>
-
-            <div class="pt-4 flex items-center gap-4">
-                <button type="submit"
-                        class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-900 text-white font-medium hover:bg-slate-800 transition">
-                    Αποθήκευση
-                </button>
-
-                <a href="{% url 'users' %}"
-                   class="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition">
-                    Ακύρωση
-                </a>
-            </div>
-        </form>
-    </div>
-
+      </div>
+    </form>
+  </div>
 </div>
-
 {% endblock %}

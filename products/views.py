@@ -146,6 +146,33 @@ def branch_delete(request, branch_id):
 
 
 
+#------------------------------------- CATEGORY -------------------------------------------------
+@admin_required
+def category_list(request):
+    categories = Category.objects.all().order_by('name')
+    return render(request, 'data/categories_list.html', {'categories': categories})
+
+
+@admin_required
+def category_add(request):
+    error = None
+
+    if request.method == 'POST':
+        name = request.POST.get('name', "").strip()
+
+        if not name:
+            error = "Το όνομα είναι υποχρεωτικό."
+        else:
+            Category.objects.create(name=name)
+            return redirect('products:category_list')
+
+    return render(request, 'data/category_add.html', {'error': error})
+
+@admin_required
+def category_delete(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    category.delete()
+    return redirect('products:category_list')
 
 
 

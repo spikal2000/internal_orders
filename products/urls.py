@@ -18,5 +18,10 @@ urlpatterns = [
     path('branches', views.branch_list, name='branch_list'),
     path('branches/<int:branch_id>/delete/', views.branch_delete, name='branch_delete'),
     path('branches/add/', views.branch_add, name='branch_add'),
+
+    # Categories
+    path('categories', views.category_list, name='category_list'),
+    path('categories/<int:category_id>/delete/', views.category_delete, name='category_delete'),
+    path('categories/add/', views.category_add, name='category_add'),
     
 ]

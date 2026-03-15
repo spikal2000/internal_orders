@@ -122,6 +122,25 @@ Dashboard
 
         </a>
 
+        <!-- Add Κατηγορία -->
+        <a href="{% url 'products:category_list' %}"
+           class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition group">
+
+            <div class="flex items-center justify-between">
+                <span class="text-3xl">🏷️</span>
+                <span class="text-xs text-slate-400">Κατηγορίες</span>
+            </div>
+
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">
+                Προσθήκη Κατηγορίας
+            </h3>
+
+            <p class="text-sm text-slate-500 mt-2">
+                Δημιουργία νέας κατηγορίας.
+            </p>
+
+        </a>
+
 
         {% comment %} <!-- Create Order -->
         <a href="#"
